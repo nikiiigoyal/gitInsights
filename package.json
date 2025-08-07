@@ -13,6 +13,8 @@
     "@apollo/client": "^3.13.9",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",
+    "@rive-app/canvas": "^2.30.4",
+    "@rive-app/react-canvas": "^4.22.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
     "class-variance-authority": "^0.7.1",
