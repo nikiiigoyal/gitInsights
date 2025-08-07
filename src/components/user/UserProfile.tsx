@@ -4,6 +4,10 @@ import { type UserData } from "@/types";
 import { useQuery } from "@apollo/client";
 import UserCard from "./UserCard";
 import StatsContainer from "./StatsContainer";
+import UsedLanguages from "../charts/UsedLanguages";
+import PopularRepos from "../charts/PopularRepos";
+import ForkedRepos from "../charts/ForkedRepos";
+import Loading from "./Loading";
 
 type UserProfileProps = {
     userName: string;
@@ -26,6 +30,7 @@ const UserProfile = ({userName}: UserProfileProps) => {
     following,
     gists,
   } = data.user;
+  if (loading) return <Loading />;
  return (
     <div>
     <UserCard avatarUrl={avatarUrl} name={name} bio={bio} url={url} />
@@ -33,6 +38,15 @@ const UserProfile = ({userName}: UserProfileProps) => {
       followers={followers.totalCount}
       following={following.totalCount}
       gists={gists.totalCount}/>
+      {
+  repositories.totalCount > 0 && (
+    <div className='grid md:grid-cols-2 gap-4'>
+      <UsedLanguages repositories={repositories.nodes} />
+      <PopularRepos repositories={repositories.nodes} />
+      <ForkedRepos repositories={repositories.nodes} />
+    </div>
+  )
+}
   </div>
  )
 }
