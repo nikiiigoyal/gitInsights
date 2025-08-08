@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRive, useStateMachineInput } from '@rive-app/react-canvas';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom'; // Add this import
+import { Line } from 'recharts';
+
 export function HomePage() {
     const { rive, RiveComponent } = useRive({
     src: '/login_screen_character.riv', // Path to .riv file in public folder
@@ -19,21 +22,18 @@ export function HomePage() {
   // State to track login status
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
-  // Handle login button click
-  const handleLoginClick = () => {
+  // Handle button click with animation
+  const handleButtonClick = () => {
     if (handsUpInput) {
       handsUpInput.fire(); // Trigger Hands Up (for trigger inputs)
-      // handsUpInput.value = true; // Use this if Hands Up is a boolean input
       setIsLoggingIn(true);
 
-      // Simulate login success after 2 seconds
       setTimeout(() => {
         if (successInput) {
           successInput.fire(); // Trigger Success
-          // successInput.value = true; // Use this if Success is a boolean
           setIsLoggingIn(false);
         }
-      }, 2000);
+      }, 1000);
     }
   };
 
@@ -41,21 +41,18 @@ export function HomePage() {
   const handleLookUp = () => {
     if (lookUpInput) {
       lookUpInput.fire(); // For trigger inputs
-      // lookUpInput.value = 1; // For number inputs (e.g., gaze direction)
     }
   };
 
   const handleLookDown = () => {
     if (lookDownInput) {
       lookDownInput.fire(); // For trigger inputs
-      // lookDownInput.value = -1; // For number inputs
     }
   };
 
   const handleLookIdle = () => {
     if (lookIdleInput) {
       lookIdleInput.fire(); // For trigger inputs
-      // lookIdleInput.value = 0; // For number inputs
     }
   };
 
@@ -65,19 +62,34 @@ export function HomePage() {
       idleInput.value = true; // Set Idle to true if it's a boolean
     }
   }, [idleInput]);
+
     return (
         <>
         <div className="w-screen h-screen flex flex-col justify-center items-center bg-gray-100 gap-5">
       <RiveComponent className="w-[min(600px,100vw)] h-[min(600px,100vh)]" />
-      <button
-        onClick={handleLoginClick} // Placeholder for future redirection
-        disabled={isLoggingIn}
-        className={`px-6 py-3 text-lg font-bold text-[hsla(286,14%,31%,1)] bg-[hsla(340,46%,46%,1)] rounded-lg 
-                   ${isLoggingIn ? 'opacity-60 cursor-not-allowed' : 'hover:bg-[hsl(332,56%,40%,1)] active:scale-95'} 
-                   transition duration-300`}
-      >
-        {isLoggingIn ? 'Logging In...' : 'Login/Sign Up'}
-      </button>
+      
+      {/* Two separate buttons */}
+      <div className="flex gap-4">
+        <Link
+          to="/login" // Navigate to login page
+          onClick={handleButtonClick} // Keep your animation
+          className={`px-6 py-3 text-lg font-bold text-[hsla(286,14%,31%,1)] bg-[hsla(340,46%,46%,1)] rounded-lg 
+                     ${isLoggingIn ? 'opacity-60 cursor-not-allowed' : 'hover:bg-[hsl(332,56%,40%,1)] active:scale-95'} 
+                     transition duration-300 inline-block text-center no-underline`}
+        >
+          Login
+        </Link>
+
+        <Link
+          to="/signup" // Navigate to signup page
+          onClick={handleButtonClick} // Keep your animation
+          className={`px-6 py-3 text-lg font-bold text-[hsla(286,14%,31%,1)] bg-[hsla(180,46%,46%,1)] rounded-lg 
+                     ${isLoggingIn ? 'opacity-60 cursor-not-allowed' : 'hover:bg-[hsl(172,56%,40%,1)] active:scale-95'} 
+                     transition duration-300 inline-block text-center no-underline`}
+        >
+          Sign Up
+        </Link>
+      </div>
     </div>
         </>
     )
