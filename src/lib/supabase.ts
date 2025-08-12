@@ -37,15 +37,15 @@ export const signInWithGoogle = async () => {
   return { data, error }
 }
 
-export const signInWithTwitter = async () => {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'twitter',
-    options: {
-      redirectTo: `${window.location.origin}/dashboard`
-    }
-  })
-  return { data, error }
-}
+// export const signInWithTwitter = async () => {
+//   const { data, error } = await supabase.auth.signInWithOAuth({
+//     provider: 'twitter',
+//     options: {
+//       redirectTo: `${window.location.origin}/dashboard`
+//     }
+//   })
+//   return { data, error }
+// }
 
 export const signOut = async () => {
   const { error } = await supabase.auth.signOut()
