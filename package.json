@@ -15,6 +15,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@rive-app/canvas": "^2.30.4",
     "@rive-app/react-canvas": "^4.22.1",
+    "@supabase/supabase-js": "^2.54.0",
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/vite": "^4.1.11",
     "class-variance-authority": "^0.7.1",
