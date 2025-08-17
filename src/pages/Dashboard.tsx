@@ -17,28 +17,51 @@ const Dashboard = () => {
     logout();
   };
 
+  // Extract first letter of user's name/email for the avatar
+  const getInitial = () => {
+    return user?.email?.charAt(0).toUpperCase() || 'U';
+  };
+
   return (
     <div className="min-h-screen">
-      {/* Simple header with logout */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="mx-auto max-w-6xl px-8 py-4">
-          <div className="flex items-center justify-between">
-           
-            
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">
-                Welcome, {user?.email}
-              </span>
-              <Button onClick={handleLogout} variant="outline" size="sm">
-                Logout
-              </Button>
+      {/* Centered header with logo-style avatar */}
+      <header className="bg-white shadow-sm">
+        <div className="mx-auto max-w-6xl px-8 py-6      
+      
+  bg-white
+  text-center
+  grid
+  grid-cols-[auto_auto_100px]
+  justify-center
+  items-center
+  gap-6      <!-- 1.5rem -->">
+          <div className="flex items-center justify-center space-x-4">
+            {/* Logo-style avatar with user initial */}
+            <div className="flex items-center justify-center w-8 h-8 bg-[#689f38] text-white rounded-full font-semibold text-lg p-3">
+              {getInitial()}
             </div>
+            
+            {/* Welcome message */}
+            <span className="text-gray-600">
+              Welcome, <strong className='uppercase'>{userName || user?.email}</strong>
+            </span>
+            
+            {/* Logout button */}
+            <Button onClick={handleLogout} variant="outline" size="sm" className=' bg-transparent
+  border-transparent
+  text-[1.2rem]
+  capitalize
+  tracking-[0.1rem]
+  text-[#617d98]
+  cursor-pointer'>
+              Logout
+            </Button>
           </div>
         </div>
       </header>
 
       {/* Your existing main content - KEEP EXACTLY AS IT IS */}
-      <main className='mx-auto max-w-6xl px-8 py-20'>
+      <main className='mx-auto px-8  bg-[#f1f5f8]'>
         <SearchForm userName={userName} setUserName={setUserName} />
         <UserProfile userName={userName} />
       </main>
