@@ -2,8 +2,9 @@
 import { GET_USER } from "@/queries";
 import { type UserData } from "@/types";
 import { useQuery } from "@apollo/client";
-import UserCard from "./UserCard";
 import StatsContainer from "./StatsContainer";
+import UserCard from "./UserCard";
+
 import UsedLanguages from "../charts/UsedLanguages";
 import PopularRepos from "../charts/PopularRepos";
 import ForkedRepos from "../charts/ForkedRepos";
