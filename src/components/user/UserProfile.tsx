@@ -15,60 +15,6 @@ type UserProfileProps = {
    
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const UserProfile = ({userName}: UserProfileProps) => {
     const {loading,error,data} = useQuery<UserData>(GET_USER, {variables: {login: userName},
     });
@@ -88,7 +34,14 @@ const UserProfile = ({userName}: UserProfileProps) => {
   if (loading) return <Loading />;
  return (
     <div>
-    <UserCard avatarUrl={avatarUrl} name={name} bio={bio} url={url} />
+    <UserCard 
+    avatarUrl={avatarUrl} 
+    name={name} 
+    bio={bio} 
+    url={url}
+    username="john doe"  // At minimum add this
+    followers={[]}       // Empty array if no followers data
+/>
     <StatsContainer totalRepos={repositories.totalCount}
       followers={followers.totalCount}
       following={following.totalCount}
