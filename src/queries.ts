@@ -7,6 +7,10 @@ export const GET_USER = gql`
       avatarUrl
       bio
       url
+      location
+     
+    company
+    
       repositories(first: 100) {
         totalCount
         nodes {
