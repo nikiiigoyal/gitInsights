@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "../ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
@@ -36,9 +37,9 @@ const UserCard = ({
                     <Card className="border-0 shadow-sm bg-white">
                         <CardHeader className="p-8">
                             {/* User Header */}
-                            <div className="font-medium mb-6 absolute -translate-y-full bg-white text-gray-500 rounded-t-lg uppercase px-4 pt-2 tracking-wider text-base">
+                            {/* <div className="font-medium mb-6 absolute -translate-y-full bg-white text-gray-500 rounded-t-lg uppercase px-4 pt-2 tracking-wider text-base">
   user
-</div>
+</div> */}
                             
                             {/* Profile Section */}
                             <div className="flex items-start justify-between mb-6">
@@ -51,10 +52,10 @@ const UserCard = ({
                                     />
                                     <div>
                                         <CardTitle className="text-xl font-semibold text-gray-900 mb-1">
-                                            {name || 'John Smilga'}
+                                            {name}
                                         </CardTitle>
                                         <CardDescription className="text-gray-500 text-base">
-                                            @{username || 'john_smilga'}
+                                            @{username}
                                         </CardDescription>
                                     </div>
                                 </div>
@@ -71,7 +72,7 @@ const UserCard = ({
                             {/* Bio */}
                             <div className="mb-8">
                                 <p className="text-gray-700 text-base leading-relaxed">
-                                    {bio || 'Creator of Coding Addict'}
+                                    {bio}
                                 </p>
                             </div>
 
@@ -81,7 +82,7 @@ const UserCard = ({
                                 <div className="flex items-center gap-3">
                                     <Building className="w-5 h-5 text-gray-400" />
                                     <span className="text-gray-600 text-base">
-                                        {company || 'Coding Addict'}
+                                        {company}
                                     </span>
                                 </div>
                                 
@@ -89,7 +90,7 @@ const UserCard = ({
                                 <div className="flex items-center gap-3">
                                     <MapPin className="w-5 h-5 text-gray-400" />
                                     <span className="text-gray-600 text-base">
-                                        {location || 'Sarasota, FL'}
+                                        {location}
                                     </span>
                                 </div>
                                 
@@ -97,12 +98,12 @@ const UserCard = ({
                                 <div className="flex items-center gap-3">
                                     <Link className="w-5 h-5 text-gray-400" />
                                     <a 
-                                        href={website || 'https://www.johnsmilga.com'} 
+                                        href={website} 
                                         target="_blank" 
                                         rel="noopener noreferrer" 
                                         className="text-cyan-500 text-base hover:underline"
                                     >
-                                        {website || 'www.johnsmilga.com'}
+                                        {website }
                                     </a>
                                 </div>
                             </div>
@@ -163,7 +164,7 @@ const UserCard = ({
                                 ))}
                             </div>
                             
-                            {/* Bottom Navigation */}
+                            {/* Bottom Navigation
                             <div className="flex justify-between items-center mt-8 pt-4">
                                 <button className="p-2 hover:bg-gray-100 rounded">
                                     <span className="text-gray-400">◄</span>
@@ -171,7 +172,7 @@ const UserCard = ({
                                 <button className="p-2 hover:bg-gray-100 rounded">
                                     <span className="text-gray-400">►</span>
                                 </button>
-                            </div>
+                            </div> */}
                         </CardHeader>
                     </Card>
                 </div>
