@@ -103,7 +103,7 @@ const UserCard = ({
                                         rel="noopener noreferrer" 
                                         className="text-cyan-500 text-base hover:underline"
                                     >
-                                        {website }
+                                        {website}
                                     </a>
                                 </div>
                             </div>
