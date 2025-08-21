@@ -8,7 +8,7 @@ export const GET_USER = gql`
       bio
       url
       location
-      website
+      
      
     company
     
