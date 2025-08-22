@@ -36,12 +36,7 @@ const UserCard = ({
                     {/* User Card - Left Side */}
                     <Card className="border-0 shadow-sm bg-white">
                         <CardHeader className="p-8">
-                            {/* User Header */}
-                            {/* <div className="font-medium mb-6 absolute -translate-y-full bg-white text-gray-500 rounded-t-lg uppercase px-4 pt-2 tracking-wider text-base">
-  user
-</div> */}
-                            
-                            {/* Profile Section */}
+                         {/* Profile Section */}
                             <div className="flex items-start justify-between mb-6">
                                 {/* Avatar and Info */}
                                 <div className="flex items-start gap-4">
