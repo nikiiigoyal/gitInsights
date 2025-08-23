@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from "../ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
-import { MapPin, Link,  Building } from "lucide-react";
+import { MapPin, Link, Building } from "lucide-react";
 
 type UserCardProps = {
     avatarUrl: string;
@@ -25,7 +25,6 @@ const UserCard = ({
     url, 
     location, 
     website, 
-    
     company, 
     followers = []
 }: UserCardProps) => {
@@ -64,43 +63,51 @@ const UserCard = ({
                                 </Button>
                             </div>
 
-                            {/* Bio */}
-                            <div className="mb-8">
-                                <p className="text-gray-700 text-base leading-relaxed">
-                                    {bio}
-                                </p>
-                            </div>
+                            {/* Bio - Only show if exists */}
+                            {bio && (
+                                <div className="mb-8">
+                                    <p className="text-gray-700 text-base leading-relaxed">
+                                        {bio}
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Details */}
                             <div className="space-y-4">
-                                {/* Company */}
-                                <div className="flex items-center gap-3">
-                                    <Building className="w-5 h-5 text-gray-400" />
-                                    <span className="text-gray-600 text-base">
-                                        {company}
-                                    </span>
-                                </div>
+                                {/* Company - Only show if exists */}
+                                {company && (
+                                    <div className="flex items-center gap-3">
+                                        <Building className="w-5 h-5 text-gray-400" />
+                                        <span className="text-gray-600 text-base">
+                                            {company}
+                                        </span>
+                                    </div>
+                                )}
                                 
-                                {/* Location */}
-                                <div className="flex items-center gap-3">
-                                    <MapPin className="w-5 h-5 text-gray-400" />
-                                    <span className="text-gray-600 text-base">
-                                        {location}
-                                    </span>
-                                </div>
+                                {/* Location - Only show if exists */}
+                                {location && (
+                                    <div className="flex items-center gap-3">
+                                        <MapPin className="w-5 h-5 text-gray-400" />
+                                        <span className="text-gray-600 text-base">
+                                            {location}
+                                        </span>
+                                    </div>
+                                )}
                                 
-                                {/* Website */}
-                                <div className="flex items-center gap-3">
-                                    <Link className="w-5 h-5 text-gray-400" />
-                                    <a 
-                                        href={website} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer" 
-                                        className="text-cyan-500 text-base hover:underline"
-                                    >
-                                        {website}
-                                    </a>
-                                </div>
+                                {/* Website - Only show if exists */}
+                                {website && (
+                                    <div className="flex items-center gap-3">
+                                        <Link className="w-5 h-5 text-gray-400" />
+                                        <a 
+                                            href={website} 
+                                            target="_blank" 
+                                            rel="noopener noreferrer" 
+                                            className="text-cyan-500 text-base hover:underline"
+                                        >
+                                            {website}
+                                        </a>
+                                    </div>
+                                )}
                             </div>
                         </CardHeader>
                     </Card>
@@ -109,7 +116,9 @@ const UserCard = ({
                     <Card className="border-0 shadow-sm bg-white">
                         <CardHeader className="p-8">
                             <div className="flex items-center justify-between mb-6">
-                                <div className="text-base text-gray-500 font-medium">Followers</div>
+                                <div className="text-base text-gray-500 font-medium">
+                                    Followers ({followers.length})
+                                </div>
                                 <div className="flex space-x-1">
                                     <button className="p-1.5 hover:bg-gray-100 rounded">
                                         <span className="text-gray-400 text-sm">▲</span>
@@ -122,52 +131,40 @@ const UserCard = ({
                             
                             {/* Followers List */}
                             <div className="space-y-5">
-                                {/* Sample Follower - matching the design */}
-                                <div className="flex items-center gap-4">
-                                    <img
-                                        src="/api/placeholder/48/48"
-                                        alt="Yassmittal"
-                                        className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-                                    />
-                                    <div className="flex-1 min-w-0">
-                                        <div className="font-medium text-gray-900 text-base mb-1">
-                                            Yassmittal
-                                        </div>
-                                        <div className="text-cyan-500 text-sm">
-                                            https://github.com/yassmittal
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                {/* Additional followers from props */}
-                                {followers.slice(0, 4).map((follower, index) => (
-                                    <div key={index} className="flex items-center gap-4">
-                                        <img
-                                            src={follower?.avatar_url || '/api/placeholder/48/48'}
-                                            alt={follower?.login || 'Follower'}
-                                            className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-                                        />
-                                        <div className="flex-1 min-w-0">
-                                            <div className="font-medium text-gray-900 text-base mb-1">
-                                                {follower?.login || 'Username'}
-                                            </div>
-                                            <div className="text-cyan-500 text-sm">
-                                                {follower?.html_url || 'https://github.com/username'}
+                                {followers.length > 0 ? (
+                                    followers.map((follower, index) => (
+                                        <div key={follower?.id || index} className="flex items-center gap-4">
+                                            <img
+                                                src={follower?.avatarUrl || `https://github.com/${follower?.login}.png?size=48`}
+                                                alt={follower?.login || 'Follower'}
+                                                className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                                                onError={(e) => {
+                                                    (e.target as HTMLImageElement).src = `https://github.com/identicons/${follower?.login || 'default'}.png`;
+                                                }}
+                                            />
+                                            <div className="flex-1 min-w-0">
+                                                <div className="font-medium text-gray-900 text-base mb-1">
+                                                    {follower?.login || 'Unknown User'}
+                                                </div>
+                                                <div className="text-cyan-500 text-sm">
+                                                    <a 
+                                                        href={follower?.url || `https://github.com/${follower?.login}`}
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer" 
+                                                        className="hover:underline"
+                                                    >
+                                                        {follower?.url || `https://github.com/${follower?.login}`}
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className="text-center text-gray-500 py-8">
+                                        No followers to display
                                     </div>
-                                ))}
+                                )}
                             </div>
-                            
-                            {/* Bottom Navigation
-                            <div className="flex justify-between items-center mt-8 pt-4">
-                                <button className="p-2 hover:bg-gray-100 rounded">
-                                    <span className="text-gray-400">◄</span>
-                                </button>
-                                <button className="p-2 hover:bg-gray-100 rounded">
-                                    <span className="text-gray-400">►</span>
-                                </button>
-                            </div> */}
                         </CardHeader>
                     </Card>
                 </div>
