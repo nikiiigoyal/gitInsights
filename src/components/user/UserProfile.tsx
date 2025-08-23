@@ -6,9 +6,11 @@ import StatsContainer from "./StatsContainer";
 import UserCard from "./UserCard";
 
 import UsedLanguages from "../charts/UsedLanguages";
-import PopularRepos from "../charts/PopularRepos";
-import ForkedRepos from "../charts/ForkedRepos";
+// import PopularRepos, { MostPopular } from "../charts/PopularRepos";
+// import ForkedRepos, { MostForked } from "../charts/ForkedRepos";
 import Loading from "./Loading";
+import MostForked from "../charts/ForkedRepos";
+import  MostPopular  from "../charts/PopularRepos";
 
 type UserProfileProps = {
     userName: string;
@@ -48,10 +50,11 @@ const UserProfile = ({userName}: UserProfileProps) => {
       gists={gists.totalCount}/>
       {
   repositories.totalCount > 0 && (
-    <div className='grid md:grid-cols-2 gap-4'>
+   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
       <UsedLanguages repositories={repositories.nodes} />
-      <PopularRepos repositories={repositories.nodes} />
-      <ForkedRepos repositories={repositories.nodes} />
+      <MostPopular repositories={repositories.nodes} />
+      {/* <StarsPerLanguage repositories={repositories} /> */}
+      <MostForked repositories={repositories.nodes} />
     </div>
   )
 }
