@@ -1,7 +1,7 @@
 import { type Repository } from '@/types';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import {
- type ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -14,44 +14,38 @@ const UsedLanguages = ({ repositories }: { repositories: Repository[] }) => {
   const popularLanguages = calculatePopularLanguages(repositories);
 
   // Configuration for the chart's styling and labels
-  // color sets the color of the bars
-
   const chartConfig = {
     language: {
       label: 'Language',
-      color: '#2563eb',
     },
   } satisfies ChartConfig;
+
+  // Define colors for pie slices
+  const COLORS = ['#2caeba', '#5d62b5', '#ffc533', '#f2726f', '#8d6e63'];
+
   return (
     <div>
-      <h2 className='text-2xl font-semibold text-center mb-4'>
-        Used Languages
-      </h2>
-      {/* ChartContainer handles responsive sizing and theme variables */}
-      <ChartContainer config={chartConfig} className='h-100 w-full'>
-        {/* BarChart is the main container for the bar chart visualization */}
-        {/* accessibilityLayer adds ARIA labels for better screen reader support */}
-        <BarChart accessibilityLayer data={popularLanguages}>
-          {/* CartesianGrid adds horizontal guide lines */}
-          <CartesianGrid vertical={false} />
-
-          {/* XAxis configures the horizontal axis showing language names */}
-          <XAxis
-            dataKey='language'
-            tickLine={false} // Removes tick marks
-            tickMargin={10} // Adds spacing between labels and axis
-          />
-
-          {/* YAxis configures the vertical axis showing count values */}
-          <YAxis dataKey='count' />
-
-          {/* ChartTooltip shows details when hovering over bars */}
-          <ChartTooltip content={<ChartTooltipContent />} />
-
-          {/* Bar component defines how each data point is rendered */}
-          {/* Uses CSS variable for color and adds rounded corners */}
-          <Bar dataKey='count' fill='var(--color-language)' radius={4} />
-        </BarChart>
+      <h3 className='text-center text-xl font-normal'>Languages</h3>
+      <ChartContainer config={chartConfig} className="h-[300px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={popularLanguages}
+              dataKey="count"
+              nameKey="language"
+              // cx="50%"
+              // cy="50%"
+              // outerRadius={80}
+              // fill="#8884d8"
+              label
+            >
+              {popularLanguages.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <ChartTooltip content={<ChartTooltipContent />} />
+          </PieChart>
+        </ResponsiveContainer>
       </ChartContainer>
     </div>
   );
