@@ -1,7 +1,7 @@
 import { type Repository } from '@/types';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from 'recharts';
 import {
- type ChartConfig,
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -12,49 +12,113 @@ const PopularRepos = ({ repositories }: { repositories: Repository[] }) => {
   // Calculate most starred repositories and return array of {repo: string, stars: number}
   const popularRepos = calculateMostStarredRepos(repositories);
 
+  // 🎨 Define different colors for each bar (matching your image)
+  const barColors = [
+    '#4DD0E1', // Teal (like your first bar)
+    '#7E57C2', // Purple (like your second bar)  
+    '#FFB74D', // Orange/Yellow (like your third bar)
+    '#F06292', // Pink/Red (like your fourth bar)
+    '#8D6E63', // Brown (like your fifth bar)
+  ];
+
   // Configuration for the chart's styling and labels
   const chartConfig = {
     repo: {
       label: 'Repository',
-      color: '#e11c47', // Red color for the bars
+      color: '#4DD0E1', // Default color (won't be used with Cell components)
     },
   } satisfies ChartConfig;
 
   return (
-    <div>
-      <h2 className='text-2xl font-semibold text-center mb-4'>Popular Repos</h2>
-      {/* ChartContainer: Custom wrapper component that handles responsive sizing and theme */}
-      <ChartContainer config={chartConfig} className='h-100 w-full'>
-        {/* BarChart: Main chart component from recharts */}
-        {/* accessibilityLayer adds ARIA labels for better screen reader support */}
-        <BarChart accessibilityLayer data={popularRepos}>
-          {/* CartesianGrid: Adds horizontal guide lines (vertical disabled) */}
-          <CartesianGrid vertical={false} />
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      {/* 📝 Custom styled title */}
+      <h2 className='text-2xl font-bold text-gray-800 text-center mb-6'>
+        Most Popular
+      </h2>
+      
+      {/* 📊 Chart Container with custom height */}
+      <ChartContainer config={chartConfig} className='h-80 w-full'>
+        <BarChart 
+          accessibilityLayer 
+          data={popularRepos}
+          margin={{ top: 20, right: 30, left: 20, bottom: 40 }} // Reduced bottom margin
+          barCategoryGap="20%" // Control spacing between bars (smaller = wider bars, larger = narrower bars)
+        >
+          {/* 📏 Grid styling - matching your subtle grid lines */}
+          <CartesianGrid 
+            vertical={false} 
+            stroke="#e0e0e0" 
+            strokeDasharray="2 2"
+            opacity={0.7}
+          />
 
-          {/* XAxis: Horizontal axis showing repository names */}
-          {/* tickFormatter truncates long repository names to 10 characters */}
+          {/* 📍 X-Axis styling - repository names */}
           <XAxis
             dataKey='repo'
             tickLine={false}
-            tickMargin={10}
-            tickFormatter={(value) => value.slice(0, 10)}
+            axisLine={false}  // Remove axis line
+            tickMargin={15}   // More space between ticks and labels
+            tick={{ 
+              fontSize: 12, 
+              fill: '#6B7280',  // Gray color for text
+              fontWeight: 500 
+            }}
+            // Custom formatter for better text wrapping
+            tickFormatter={(value) => {
+              // Split long names and return first part
+              return value.length > 12 ? `${value.slice(0, 10)}...` : value;
+            }}
+            interval={0} // Show all labels
+            angle={-45}  // Rotate labels for better fit
+            textAnchor="end"
+            height={80}
           />
 
-          {/* YAxis: Vertical axis showing star counts */}
-          <YAxis dataKey='stars' />
+          {/* 📊 Y-Axis styling - star counts */}
+          <YAxis 
+            tickLine={false}
+            axisLine={false}  // Remove axis line
+            tick={{ 
+              fontSize: 12, 
+              fill: '#6B7280',  // Gray color for text
+              fontWeight: 500 
+            }}
+            tickMargin={10}
+            domain={[0, 'dataMax + 10']} // Add some padding to top
+          />
 
-          {/* ChartTooltip: Custom tooltip component that appears on hover */}
-          {/* ChartTooltipContent: Renders the actual content inside the tooltip */}
-          <ChartTooltip content={<ChartTooltipContent />} />
+          {/* 💬 Tooltip with custom styling */}
+          <ChartTooltip 
+            content={<ChartTooltipContent 
+              className="bg-white border border-gray-200 shadow-lg rounded-lg p-3"
+              labelStyle={{ color: '#374151', fontWeight: 600 }}
+              itemStyle={{ color: '#6B7280' }}
+            />} 
+          />
 
-          {/* Bar: The actual bar elements of the chart */}
-          {/* fill uses CSS variable for consistent theming */}
-          {/* radius adds rounded corners to the bars */}
-          <Bar dataKey='stars' fill='var(--color-repo)' radius={4} />
+          {/* 📊 Bar component with individual colors using Cell */}
+          <Bar 
+            dataKey='stars' 
+            radius={[4, 4, 0, 0]} // Rounded top corners only
+            stroke="none"          // Remove border
+          >
+            {popularRepos.map((entry, index) => (
+              <Cell 
+                key={`cell-${index}`} 
+                fill={barColors[index] || barColors[0]} // Use different color for each bar
+              />
+            ))}
+          </Bar>
         </BarChart>
       </ChartContainer>
+      
+      {/* 📈 Optional: Add axis label */}
+      <div className="text-center mt-4">
+        <span className="text-sm text-gray-500 font-medium">Repos</span>
+      </div>
     </div>
   );
 };
 
 export default PopularRepos;
+
