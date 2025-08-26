@@ -29,15 +29,17 @@ const UsedLanguages = ({ repositories }: { repositories: Repository[] }) => {
       <ChartContainer config={chartConfig} className="h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
-            <Pie
+            <Pie 
               data={popularLanguages}
               dataKey="count"
               nameKey="language"
-              // cx="50%"
-              // cy="50%"
-              // outerRadius={80}
-              // fill="#8884d8"
-              label
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              labelLine={{ stroke: 'rgb(97 131 165)' }}
+              label={({ name, value }) => (
+                <text fill="rgb(97 131 165)">{`${name}, ${value}`}</text>
+              )}
             >
               {popularLanguages.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

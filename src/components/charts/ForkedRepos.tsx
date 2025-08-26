@@ -1,56 +1,68 @@
-import { type Repository } from '@/types';
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
-import {
- type ChartConfig,
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart';
-import { calculateMostForkedRepos } from '@/utils';
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis, Cell } from 'recharts';
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
 
-const ForkedRepos = ({ repositories }: { repositories: Repository[] }) => {
-  // Calculate most forked repositories and return array of {repo: string, count: number}
-  const mostForkedRepos = calculateMostForkedRepos(repositories);
+const ForkedRepos = ({ repositories }) => {
+  // Calculate most forked repositories dynamically
+  const mostForkedRepos = repositories.map(repo => ({
+    repo: repo.name,
+    count: repo.forks,
+  })).sort((a, b) => b.count - a.count).slice(0, 5); // Top 5 for consistency with the image
 
-  // Define chart configuration for styling and labels
+  
+  const barColors = [
+    '#4DD0E1', // Teal
+    '#7E57C2', // Purple
+    '#FFB74D', // Orange/Yellow
+    '#F06292', // Pink/Red
+    '#8D6E63', // Brown
+  ];
+
+  // Chart configuration
   const chartConfig = {
-    repo: {
-      label: 'Repository',
-      color: '#facd12',
+    count: {
+      label: 'Forks',
+      color: '#4DD0E1',
     },
-  } satisfies ChartConfig;
+  };
 
   return (
-    <div>
-      <h2 className='text-2xl font-semibold text-center mb-4'>Forked Repos</h2>
-      {/* ChartContainer handles responsive sizing and theme variables */}
-      <ChartContainer config={chartConfig} className='h-100 w-full'>
-        {/* BarChart is the main container for the bar chart visualization */}
-        {/* accessibilityLayer adds ARIA labels for better screen reader support */}
-        <BarChart accessibilityLayer data={mostForkedRepos}>
-          {/* CartesianGrid adds background gridlines, vertical lines disabled */}
-          <CartesianGrid vertical={false} />
-
-          {/* XAxis configures the horizontal axis */}
+    <div className="bg-white p-6 rounded-lg shadow-sm">
+      <h2 className="text-center text-xl font-normal text-gray-700 mb-6">Most Forked</h2>
+      <ChartContainer config={chartConfig} className="h-80 w-full">
+        <BarChart layout="horizontal" data={mostForkedRepos} margin={{ top: 20, right: 60, left: 120, bottom: 20 }}>
+          <CartesianGrid horizontal={true} vertical={false} stroke="#e5e7eb" strokeDasharray="3 3" opacity={0.6} />
           <XAxis
-            dataKey='repo' // Uses 'repo' property from data for labels
-            tickLine={true} // Shows small lines at each tick mark
-            tickMargin={10} // Space between tick line and label
-            axisLine={false} // Hides the main axis line
-            tickFormatter={(value) => value.slice(0, 10)} // Truncates long repo names
+            type="number"
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 12, fill: '#9CA3AF', fontWeight: 400 }}
+            tickMargin={8}
+            domain={[0, 'dataMax + 5']} // Dynamic max with padding
           />
-
-          {/* YAxis configures the vertical axis, showing fork counts */}
-          <YAxis dataKey='count' />
-
-          {/* ChartTooltip shows details when hovering over bars */}
-          <ChartTooltip content={<ChartTooltipContent />} />
-
-          {/* Bar component defines the actual bars in the chart */}
-          {/* Uses CSS variable for color and rounded corners (radius) */}
-          <Bar dataKey='count' fill='var(--color-repo)' radius={4} />
+          <YAxis
+            type="category"
+            dataKey="repo"
+            tickLine={false}
+            axisLine={false}
+            tick={{ fontSize: 12, fill: '#9CA3AF', fontWeight: 400, textAnchor: 'end' }}
+            tickMargin={8}
+            width={100}
+            tickFormatter={(value) => (value.length > 25 ? `${value.slice(0, 23)}...` : value)}
+          />
+          <ChartTooltip content={<ChartTooltipContent className="bg-white border border-gray-200 shadow-lg rounded-lg p-3" labelStyle={{ color: '#374151', fontWeight: 600 }} itemStyle={{ color: '#6B7280' }} />} />
+          <Bar dataKey="count" radius={[0, 4, 4, 0]} stroke="none">
+            {mostForkedRepos.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={barColors[index % barColors.length]} />
+            ))}
+          </Bar>
         </BarChart>
       </ChartContainer>
+      <div className="text-center mt-4">
+        <span className="text-sm text-gray-500 font-medium">Forks</span>
+      </div>
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 -rotate-90">
+        <span className="text-sm text-gray-500 font-medium">Repos</span>
+      </div>
     </div>
   );
 };
